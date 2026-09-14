@@ -1,0 +1,26 @@
+#include "Reservation.h"
+#include <iostream>
+
+
+Reservation::Reservation(string reservation_id, students s, string resource_id, string date)
+    : reservation_id(reservation_id), student(s), resource_id(resource_id), date(date) {}
+
+string Reservation::get_reservation_id() const {
+    return reservation_id;
+}
+
+string Reservation::get_student_id() const {
+    return student.student_id;
+}
+
+string Reservation::get_student_name() const {
+    return student.student_name;
+}
+
+string Reservation::get_date() const {
+    return date;
+}   
+
+string Reservation::get_resource_id() const {
+    return resource_id;
+}

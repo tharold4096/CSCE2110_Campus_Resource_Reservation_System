@@ -1,15 +1,21 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include <iostream>
+#include <vector>
+using namespace std;
 
-class LinkedList 
-{   
+
+
+template <typename T>
+class LinkedList
+{
     private:
-        struct Node 
+        struct Node
         {
-            int data;
+            T data;
             Node* next;
-            
+            Node(const T& value, Node* next_node = nullptr) : data(value), next(next_node) {}
         };
 
         Node* head;
@@ -17,16 +23,16 @@ class LinkedList
     public:
         LinkedList();
         ~LinkedList();
-        void insert_at_end(int value);
-        void insert_at_beginning(int value);
-        void insert_after(int target, int value);
-        void remove(int value);
+        LinkedList(const LinkedList&) = delete;
+        LinkedList& operator=(const LinkedList&) = delete;
+        void insert_at_beginning(const T& value);
+        void insert_at_end(const T& value);
+        void insert_after(const T& target, const T& value);
+        bool remove(const T& value);
         void print_list() const;
-        //void free_list();
-    
-
+        std::vector<T> get_all() const;
 };
 
-
+#include "LinkedList.tpp"
 
 #endif // LINKEDLIST_H
