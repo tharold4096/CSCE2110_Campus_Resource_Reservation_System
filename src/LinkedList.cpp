@@ -1,9 +1,9 @@
 #include "LinkedList.h"
 
 #include <iostream>
-
+#include "Reservation.h"
 //Default constructor
-LinkedList::LinkedList() : head(nullptr) {}
+LinkedList::LinkedList(): head(nullptr) {}
 
 //Destructor
 LinkedList::~LinkedList()
@@ -17,20 +17,16 @@ LinkedList::~LinkedList()
 }
 
 //Function to insert new node at beginning
-void LinkedList::insert_at_beginning(int value)
+void LinkedList::insert_at_beginning(Reservation value)
 {
-    Node* node = new Node;
-    node->data = value;
-    node->next = head;
+    Node* node = new Node{value, head};
     head = node;
 }
 
 //Insert function to add a new node to the end of the list
-void LinkedList::insert_at_end(int value)
+void LinkedList::insert_at_end(Reservation value)
 {
-    Node* node = new Node;
-    node->data = value;
-    node->next = nullptr;
+    Node* node = new Node{value, nullptr};
 
     if (head == nullptr)
     {
@@ -46,27 +42,25 @@ void LinkedList::insert_at_end(int value)
 }
 
 //Function to insert node after specific node
-void LinkedList::insert_after(int target, int value)
+void LinkedList::insert_after(std::string target_reservation_id, Reservation value)
 {
     Node* current = head;
-    while (current != nullptr && current->data != target)
+    while (current != nullptr && current->data.get_reservation_id() != target_reservation_id    )
         current = current->next;
 
     if (current == nullptr)
         return;
 
-    Node* node = new Node;
-    node->data = value;
-    node->next = current->next;
+    Node* node = new Node{value, current->next};
     current->next = node;
 }
 
-void LinkedList::remove(int value)
+void LinkedList::remove(std::string reservation_id)
 {
     Node* current = head;
     Node* previous = nullptr;
 
-    while (current != nullptr && current->data != value)
+    while (current != nullptr && current->data.get_reservation_id() != reservation_id)
     {
         previous = current;
         current = current->next;

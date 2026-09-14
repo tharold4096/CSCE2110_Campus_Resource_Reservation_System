@@ -1,1 +1,1 @@
-#Resource cpp file
+//Resource cpp file

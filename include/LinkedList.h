@@ -7,7 +7,7 @@ class LinkedList
     private:
         struct Node 
         {
-            int data;
+            Reservation data;
             Node* next;
             
         };
@@ -17,11 +17,13 @@ class LinkedList
     public:
         LinkedList();
         ~LinkedList();
-        void insert_at_end(int value);
-        void insert_at_beginning(int value);
-        void insert_after(int target, int value);
-        void remove(int value);
+        void insert_at_end(Reservation value);
+        void insert_at_beginning(Reservation value);
+        void insert_after(std::string target, Reservation value);
+        void remove(std::string value);
         void print_list() const;
+        LinkedList(const LinkedList&) = delete;
+        LinkedList& operator=(const LinkedList&) = delete;
         //void free_list();
     
 
