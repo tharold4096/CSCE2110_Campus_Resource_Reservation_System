@@ -1,17 +1,21 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
-#include "Reservation.h"
+#include <iostream>
 #include <vector>
 using namespace std;
-class LinkedList 
-{   
+
+
+
+template <typename T>
+class LinkedList
+{
     private:
-        struct Node 
+        struct Node
         {
-            Reservation data;
+            T data;
             Node* next;
-            
+            Node(const T& value, Node* next_node = nullptr) : data(value), next(next_node) {}
         };
 
         Node* head;
@@ -19,19 +23,16 @@ class LinkedList
     public:
         LinkedList();
         ~LinkedList();
-        void insert_at_end(Reservation value);
-        void insert_at_beginning(Reservation value);
-        void insert_after(std::string target, Reservation value);
-        bool remove(std::string reservation_id);
-        void print_list() const;
         LinkedList(const LinkedList&) = delete;
         LinkedList& operator=(const LinkedList&) = delete;
-        //void free_list();
-
-        
-        std::vector<Reservation> find_by_student_name(string student_name) const;
+        void insert_at_beginning(const T& value);
+        void insert_at_end(const T& value);
+        void insert_after(const T& target, const T& value);
+        bool remove(const T& value);
+        void print_list() const;
+        std::vector<T> get_all() const;
 };
 
-
+#include "LinkedList.tpp"
 
 #endif // LINKEDLIST_H
