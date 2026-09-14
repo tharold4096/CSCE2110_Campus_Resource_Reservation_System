@@ -19,6 +19,6 @@ class WaitingList
         void display_list() const;
 
 
-}
+};
 
 #endif // WAITINGLIST_H
