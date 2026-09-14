@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Reservation.h"
+
 //Default constructor
 LinkedList::LinkedList(): head(nullptr) {}
 
@@ -55,7 +56,7 @@ void LinkedList::insert_after(std::string target_reservation_id, Reservation val
     current->next = node;
 }
 
-void LinkedList::remove(std::string reservation_id)
+bool LinkedList::remove(std::string reservation_id)
 {
     Node* current = head;
     Node* previous = nullptr;
@@ -68,7 +69,7 @@ void LinkedList::remove(std::string reservation_id)
 
     //Don't remove nonexistent nodes
     if (current == nullptr)
-        return;
+        return false;
 
     //Find the new head
     if (previous == nullptr)
@@ -77,6 +78,7 @@ void LinkedList::remove(std::string reservation_id)
         previous->next = current->next;
 
     delete current;
+    return true;
 }
 
 void LinkedList::print_list() const
@@ -84,10 +86,31 @@ void LinkedList::print_list() const
     Node* current = head;
     while (current != nullptr)
     {
-        std::cout << current->data;
+        current->data.print();
         if (current->next != nullptr)
-            std::cout << " -> ";
+            cout << " -> ";
         current = current->next;
     }
-    std::cout << '\n';
+    cout << '\n';
+}
+
+
+std::vector<Reservation> LinkedList::find_by_student_id(std::string student_id) const
+{
+    std::vector<Reservation> results;
+    Node* current = head;
+
+    while (current != nullptr)
+    {
+        if (current->data.get_student_id() == student_id)
+        {
+            results.push_back(current->data);
+        }
+        current = current->next;
+    }
+    if(results.empty())
+    {
+        cout << "No reservations found for student ID: " << student_id << endl;
+    }
+    return results;
 }
