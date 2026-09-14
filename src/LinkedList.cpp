@@ -95,14 +95,14 @@ void LinkedList::print_list() const
 }
 
 
-std::vector<Reservation> LinkedList::find_by_student_id(std::string student_id) const
+std::vector<Reservation> LinkedList::find_by_student_name(std::string student_name) const
 {
     std::vector<Reservation> results;
     Node* current = head;
 
     while (current != nullptr)
     {
-        if (current->data.get_student_id() == student_id)
+        if (current->data.get_student_name() == student_name)
         {
             results.push_back(current->data);
         }
@@ -110,7 +110,7 @@ std::vector<Reservation> LinkedList::find_by_student_id(std::string student_id) 
     }
     if(results.empty())
     {
-        cout << "No reservations found for student ID: " << student_id << endl;
+        cout << "No reservations found for student name: " << student_name << endl;
     }
     return results;
 }

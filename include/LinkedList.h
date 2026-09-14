@@ -29,7 +29,7 @@ class LinkedList
         //void free_list();
 
         
-        std::vector<Reservation> find_by_student_id(string reservation_id) const;
+        std::vector<Reservation> find_by_student_name(string student_name) const;
 };
 
 
