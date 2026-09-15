@@ -47,8 +47,6 @@ template <typename T>
 void LinkedList<T>::insert_after(const T& target, const T& value)
 {
     Node* current = head;
-    // RESERVATION: change to current->data.get_reservation_id() != target_reservation_id
-    // (or overload operator== in Reservation and leave this as is)
     while (current != nullptr && !(current->data == target))
         current = current->next;
 
@@ -63,9 +61,6 @@ bool LinkedList<T>::remove(const T& value)
 {
     Node* current = head;
     Node* previous = nullptr;
-
-    // RESERVATION: change to current->data.get_reservation_id() != reservation_id
-    // (or overload operator== in Reservation and leave this as is)
     while (current != nullptr && !(current->data == value))
     {
         previous = current;
@@ -92,8 +87,7 @@ void LinkedList<T>::print_list() const
     Node* current = head;
     while (current != nullptr)
     {
-        // RESERVATION: change to current->data.print() (or overload operator<< in Reservation)
-        cout << current->data;
+        current->data.print();
         if (current->next != nullptr)
             cout << " -> ";
         current = current->next;
@@ -115,27 +109,3 @@ std::vector<T> LinkedList<T>::get_all() const
     }
     return results;
 }
-
-// RESERVATION: Reservation-only lookup. Uncomment (and the declaration in
-// LinkedList.h) once the list holds Reservations.
-//
-// template <typename T>
-// vector<T> LinkedList<T>::find_by_student_name(string student_name) const
-// {
-//     vector<T> results;
-//     Node* current = head;
-//
-//     while (current != nullptr)
-//     {
-//         if (current->data.get_student_name() == student_name)
-//         {
-//             results.push_back(current->data);
-//         }
-//         current = current->next;
-//     }
-//     if (results.empty())
-//     {
-//         cout << "No reservations found for student name: " << student_name << endl;
-//     }
-//     return results;
-// }

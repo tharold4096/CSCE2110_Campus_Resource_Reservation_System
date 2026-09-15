@@ -24,3 +24,12 @@ string Reservation::get_date() const {
 string Reservation::get_resource_id() const {
     return resource_id;
 }
+
+
+void Reservation::print() const {
+    cout << "Reservation ID: " << reservation_id << endl;
+    cout << "Student ID: " << student.student_id << endl;
+    cout << "Student Name: " << student.student_name << endl;
+    cout << "Resource ID: " << resource_id << endl;
+    cout << "Date: " << date << endl;
+}

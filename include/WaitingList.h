@@ -10,12 +10,12 @@ using namespace std;
 class WaitingList
 {
     private:
-        LinkedList<string> list;
+        LinkedList<students> list;
 
     public:
         WaitingList();
-        void add_student(string student_name);
-        void remove_student(string student_name);
+        void add_student(students student);
+        void remove_student(students student);
         void display_list() const;
 
 
