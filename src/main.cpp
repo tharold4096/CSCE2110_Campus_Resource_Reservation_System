@@ -46,6 +46,18 @@ int main()
 
     manager.create_reservation(reservation1);
 
+    //test #2 duplicate ----2----
+    Reservation reservation2(
+        "R002",
+        student,
+        "Room101",
+        "09/20/2026"
+    );
+
+    manager.create_reservation(reservation2);
+    //test #2 dup end ----2----
+
+
     cout << endl;
     manager.display_reservations();
 
@@ -54,6 +66,8 @@ int main()
 
     cout << endl;
     manager.display_reservations();
+
+
 
     // end of reservation testing ------- 
       

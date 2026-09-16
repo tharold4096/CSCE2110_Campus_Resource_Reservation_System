@@ -42,7 +42,12 @@ bool ReservationManager::validate_reservation(const Reservation& reservation) co
 	vector<Reservation> all_reservations = reservations.get_all();
 
 	for (const Reservation& existing : all_reservations) {
-		if (existing.get_reservation_id() == reservation.get_reservation_id()) {
+		if (existing.get_reservation_id() == reservation.get_reservation_id()) { //stops duplicate reservation ID
+			return false;
+		}
+		if (existing.get_resource_id() == reservation.get_resource_id() &&   //stops the same resource to provent double reservation
+			existing.get_date() == reservation.get_date()) {    
+			
 			return false;
 		}
 	}
@@ -67,6 +72,7 @@ void ReservationManager::display_reservations() const {
 		cout << endl;
 	}
 }
+
 
 
 void ReservationManager::cancel_reservation(const Reservation& reservation) {
