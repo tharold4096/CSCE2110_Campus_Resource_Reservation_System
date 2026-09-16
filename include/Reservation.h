@@ -21,7 +21,8 @@ class Reservation
         string get_date() const;
         string get_resource_id() const;
         void print() const;
-        bool search() const;
+
+        bool operator==(const Reservation& other) const;
 
 };
 
