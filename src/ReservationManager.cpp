@@ -29,7 +29,7 @@ bool ReservationManager::validate_reservation(const Reservation& reservation) co
 		return false;
 	}
 	if (reservation.get_student_id().empty()) {
-		return false:
+		return false;
 	}
 	if (reservation.get_resource_id().empty()) {
 		return false;

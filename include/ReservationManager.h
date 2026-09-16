@@ -13,7 +13,7 @@ private:
 
 public:
 	  void create_reservation(const Reservation& reservation);
-	  void cancel_reservation(cost Reservation& reservation);
+	  void cancel_reservation(const Reservation& reservation);
 	  void display_reservations() const;
 	  bool validate_reservation(const Reservation& reservation) const;
 };
