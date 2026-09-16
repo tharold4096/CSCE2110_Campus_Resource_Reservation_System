@@ -33,3 +33,7 @@ void Reservation::print() const {
     cout << "Resource ID: " << resource_id << endl;
     cout << "Date: " << date << endl;
 }
+
+bool Reservation::operator==(const Reservation& other) const {
+    return reservation_id == other.reservation_id;
+}
