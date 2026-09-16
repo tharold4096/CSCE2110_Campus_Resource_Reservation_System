@@ -46,7 +46,7 @@ int main()
 
     manager.create_reservation(reservation1);
 
-    //test #2 duplicate ----2----
+    //test #2 duplicate 
     Reservation reservation2(
         "R002",
         student,
@@ -55,8 +55,17 @@ int main()
     );
 
     manager.create_reservation(reservation2);
-    //test #2 dup end ----2----
+    
+    //test #3 valid different data
+    Reservation reservation3(
+        "R003",
+        student,
+        "Room101",
+        "09/21/2026"
 
+    );
+
+    manager.create_reservation(reservation3);
 
     cout << endl;
     manager.display_reservations();
