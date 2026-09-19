@@ -26,13 +26,13 @@ bool ResourceManager:: load_resources(const string& filename)
 
         stringstream ss(line);
 
-        getline(ss, id, ',');
-        getline(ss, name, ',');
-        getline(ss, type, ',');
-        getline(ss, status, ',');
+        getline(ss, id, '|');
+        getline(ss, name, '|');
+        getline(ss, type, '|');
+        getline(ss, status, '|');
 
         bool available;
-        if(status == "1")
+        if(status == "Available")
             available = true;
         else
             available = false;
