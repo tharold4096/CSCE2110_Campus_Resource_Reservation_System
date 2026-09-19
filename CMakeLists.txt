@@ -12,5 +12,8 @@ add_executable(CampusResourceReservationSystem
     src/Reservation.cpp
     src/ReservationManager.cpp
     src/WaitingList.cpp
+    src/Resource.cpp
+    src/ResourceManager.cpp
+
 )
 
