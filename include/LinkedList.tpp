@@ -94,7 +94,7 @@ void LinkedList<T>::print_list() const
     {
         current->data.print();
         if (current->next != nullptr)
-            cout << " -> ";
+            cout << " <- ";
         current = current->next;
     }
     cout << '\n';

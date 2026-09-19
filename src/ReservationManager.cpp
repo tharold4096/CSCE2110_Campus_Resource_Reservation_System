@@ -100,7 +100,7 @@ void ReservationManager::cancel_reservation(const Reservation& reservation) {
 
 bool ReservationManager::undo_cancel()
 {
-	return cancellation.restore_canceled();
+	return cancellation.restore_canceled(*this);
 }
 
 void ReservationManager::display_cancellations()
