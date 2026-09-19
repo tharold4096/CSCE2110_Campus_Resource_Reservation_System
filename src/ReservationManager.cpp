@@ -6,17 +6,19 @@ using namespace std;
 
 
 
-void ReservationManager::create_reservation(const Reservation& reservation) {
+bool ReservationManager::create_reservation(const Reservation& reservation) {
 
 	// checking if res should be allowed & adding to linked list
 	if (validate_reservation(reservation)) {
 		reservations.insert_at_end(reservation);
 		cout << "Reservation created successfully." << endl;
+		return true;
 	}
 
 	else {
 
 		cout << "Reservation could not be created." << endl;
+		return false;
 	}
 }
 
@@ -76,11 +78,23 @@ void ReservationManager::display_reservations() const {
 
 
 void ReservationManager::cancel_reservation(const Reservation& reservation) {
-	if (reservations.remove(reservation)) {
-		cout << "Reservation cancelled successfully. " << endl;
+	vector<Reservation> all_reservations = reservations.get_all();
+	int found = -1;
+	for (int i = 0; i < (int)all_reservations.size(); i++) {
+		if (all_reservations[i].get_reservation_id() == reservation.get_reservation_id()) {
+			found = i;
+			break;
+		}
 	}
-	else {
+
+	if (found == -1) {
 		cout << "Reservation not found. " << endl;
+		return;
 	}
+
+	Reservation reservation_found = all_reservations[found];
+	reservations.remove(reservation_found);
+	cancellation.push(reservation_found);
+	cout << "Reservation cancelled successfully. " << endl;
 }
 

@@ -1,7 +1,7 @@
 #ifndef RESERVATIONMANAGER_H  //  header gaurds 
 #define RESERVATIONMANAGER_H
 
-
+#include "Cancellations.h" 
 #include "LinkedList.h" 
 #include "Reservation.h"   
 
@@ -10,9 +10,10 @@ class ReservationManager {
 
 private:
 	LinkedList<Reservation> reservations;  // res are stored in linked list
+	Cancellations cancellation;
 
 public:
-	  void create_reservation(const Reservation& reservation);
+	  bool create_reservation(const Reservation& reservation);
 	  void cancel_reservation(const Reservation& reservation);
 	  void display_reservations() const;
 	  bool validate_reservation(const Reservation& reservation) const;

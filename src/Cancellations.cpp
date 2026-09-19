@@ -1,4 +1,5 @@
 #include "Cancellations.h"
+#include "ReservationManager.h"
 
 Cancellations::Cancellations() {}
 
@@ -26,6 +27,30 @@ int Cancellations::size() const
 {
     return canceled.get_size();
 }
+
+bool Cancellations::restore_canceled(ReservationManager& manager)
+{
+
+    if(is_empty())
+    {
+        return false;
+    }
+    Reservation temp = peep();
+
+    bool outcome = manager.create_reservation(temp);
+
+    if(!outcome)
+    {
+        cout << "Reservation could not be restored" << endl;
+        return false;
+    }
+    else{
+        cout << "Reservation restored" << endl;
+        return pop();
+    }
+}
+
+
 
 
 

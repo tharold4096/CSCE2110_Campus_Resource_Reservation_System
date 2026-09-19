@@ -34,6 +34,7 @@ class LinkedList
         void print_list() const;
         std::vector<T> get_all() const;
         bool remove_front();
+        bool remove_front(T& out);
         bool is_empty() const;
         T get_head() const;
         int get_size() const;
