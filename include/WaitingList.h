@@ -15,8 +15,8 @@ class WaitingList
         WaitingList();
         void enqueue(students student);
         bool remove_student(students student);
-
-        bool next_student(students& out);
+        bool peek(students& out) const;
+        bool dequeue(students& out);
         void display_list() const;
         bool is_empty() const;
 

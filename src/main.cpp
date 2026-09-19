@@ -44,7 +44,7 @@ int main()
     students next;
     for (int i = 0; i < 4; i++)
     {
-        if (queue_test.next_student(next))
+        if (queue_test.dequeue(next))
         {
             next.print();
             cout << endl;
