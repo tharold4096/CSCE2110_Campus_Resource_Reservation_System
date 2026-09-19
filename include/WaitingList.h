@@ -14,8 +14,10 @@ class WaitingList
 
     public:
         WaitingList();
-        void add_student(students student);
-        void remove_student(students student);
+        void enqueue(students student);
+        //void remove_student(students student);
+
+        bool next_student(students& out);
         void display_list() const;
 
 

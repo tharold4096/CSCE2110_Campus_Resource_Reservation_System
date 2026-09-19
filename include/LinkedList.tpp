@@ -109,3 +109,15 @@ std::vector<T> LinkedList<T>::get_all() const
     }
     return results;
 }
+
+template <typename T>
+bool LinkedList<T>::remove_front(T& out)
+{
+    if (head == nullptr)
+        return false;
+    Node* node = head;
+    out =node->data;
+    head = head->next;
+    delete node;
+    return true;
+}

@@ -31,6 +31,7 @@ class LinkedList
         bool remove(const T& value);
         void print_list() const;
         std::vector<T> get_all() const;
+        bool remove_front(T& out);
 };
 
 #include "LinkedList.tpp"

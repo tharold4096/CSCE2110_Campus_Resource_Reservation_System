@@ -29,7 +29,7 @@ int main()
     students student{student_id, student_name};
 
     WaitingList waiting_list;
-    waiting_list.add_student(student);
+    waiting_list.enqueue(student);
     waiting_list.display_list();
 
     //Reservation testing ------
