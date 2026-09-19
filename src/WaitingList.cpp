@@ -15,3 +15,20 @@ bool WaitingList::next_student(students& out)
 void WaitingList::display_list() const {
     list.print_list();
 }
+
+bool WaitingList::remove_student(students student)
+{
+    list.remove(student);
+
+}
+
+bool WaitingList::is_empty() const {
+    
+    if(list.get_all().empty())
+    {
+        return true;
+    }
+
+    return false;
+    
+}

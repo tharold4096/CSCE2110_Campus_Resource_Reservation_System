@@ -121,3 +121,9 @@ bool LinkedList<T>::remove_front(T& out)
     delete node;
     return true;
 }
+
+template <typename T>
+bool LinkedList<T>::is_empty() const
+{
+    return head == nullptr;
+}

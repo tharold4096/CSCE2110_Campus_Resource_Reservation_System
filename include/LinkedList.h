@@ -32,6 +32,7 @@ class LinkedList
         void print_list() const;
         std::vector<T> get_all() const;
         bool remove_front(T& out);
+        bool is_empty() const;
 };
 
 #include "LinkedList.tpp"
