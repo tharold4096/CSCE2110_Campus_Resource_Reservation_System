@@ -7,6 +7,7 @@
 #include "Students.h"
 #include "WaitingList.h"
 #include "ReservationManager.h"
+#include "ResourceManager.h"
 
 
 
@@ -15,6 +16,17 @@ using namespace std;
 int main() 
 {
     cout << "Welcome to the Campus Resource Reservation System!" << endl;
+    cout << endl;
+    cout << "Testing Resource Management..." << endl;
+
+    ResourceManager resource_manager;
+
+    if(resource_manager.load_resources("data/resources.txt"))
+    {
+        resource_manager.display_resources();
+
+    }
+    cout << endl;
 
     string student_name;
     cout << "Enter student name: ";

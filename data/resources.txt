@@ -1,0 +1,6 @@
+Room101,Study Room 101,Study Room,1
+Room102,Study Room 102,Study Room,1
+Laptop101,Dell Laptop,Laptop,1
+Calc101,TI-84 Calculator,Calculator,1
+Lab101,Microscope,Lab Equipment,1
+Tutor101,Math Tutoring,Tutoring Appointment,1
