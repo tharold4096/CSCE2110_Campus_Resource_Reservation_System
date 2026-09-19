@@ -6,7 +6,6 @@ using namespace std;
 class Reservation 
 {
     private:
-        int id;
         string reservation_id;
         students student;
         string resource_id;

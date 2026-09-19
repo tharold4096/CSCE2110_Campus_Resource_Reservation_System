@@ -13,7 +13,7 @@ bool Cancellations::pop()
     return canceled.remove_front();
 }
 
-Reservation Cancellations::peep() const
+Reservation Cancellations::peek() const
 {
     return canceled.get_head();
 }
@@ -35,7 +35,7 @@ bool Cancellations::restore_canceled(ReservationManager& manager)
     {
         return false;
     }
-    Reservation temp = peep();
+    Reservation temp = peek();
 
     bool outcome = manager.create_reservation(temp);
 
@@ -48,6 +48,11 @@ bool Cancellations::restore_canceled(ReservationManager& manager)
         cout << "Reservation restored" << endl;
         return pop();
     }
+}
+
+void Cancellations::display_history()
+{
+    canceled.print_list();
 }
 
 

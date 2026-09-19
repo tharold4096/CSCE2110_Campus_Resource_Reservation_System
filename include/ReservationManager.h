@@ -17,6 +17,8 @@ public:
 	  void cancel_reservation(const Reservation& reservation);
 	  void display_reservations() const;
 	  bool validate_reservation(const Reservation& reservation) const;
+	  bool undo_cancel();
+	  void display_cancellations();
 };
 #endif
 

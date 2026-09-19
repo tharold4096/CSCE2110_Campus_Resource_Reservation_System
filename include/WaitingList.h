@@ -13,7 +13,7 @@ class WaitingList
 
     public:
         WaitingList();
-        void enqueue(students student);
+        bool enqueue(students student);
         bool remove_student(students student);
         bool peek(students& out) const;
         bool dequeue(students& out);

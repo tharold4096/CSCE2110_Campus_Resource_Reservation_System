@@ -15,10 +15,11 @@ class Cancellations
         Cancellations();
         void push(Reservation res);
         bool pop();
-        Reservation peep() const;
+        Reservation peek() const;
         bool is_empty() const;
         int size() const;
         bool restore_canceled(ReservationManager& manager);
+        void display_history();
 };
 
 

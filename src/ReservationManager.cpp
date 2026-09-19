@@ -98,3 +98,13 @@ void ReservationManager::cancel_reservation(const Reservation& reservation) {
 	cout << "Reservation cancelled successfully. " << endl;
 }
 
+bool ReservationManager::undo_cancel()
+{
+	return cancellation.restore_canceled();
+}
+
+void ReservationManager::display_cancellations()
+{
+	cancellation.display_history();
+}
+

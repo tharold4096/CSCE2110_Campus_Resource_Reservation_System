@@ -3,8 +3,18 @@
 WaitingList::WaitingList() {}
 
 //Add student to the back of the waiting list
-void WaitingList::enqueue(students student) {
+bool WaitingList::enqueue(students student) {
+    vector<students> students_all = list.get_all();
+    for(const students current : students_all)
+    {
+        if(current.student_id == student.student_id)
+        {
+            cout << "Student is already in the waiting list" << endl;
+            return false;
+        }
+    }
     list.insert_at_end(student);
+    return true;
 }
 
 bool WaitingList::dequeue(students& out)
