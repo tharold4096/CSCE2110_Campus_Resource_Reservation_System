@@ -32,6 +32,30 @@ int main()
     waiting_list.enqueue(student);
     waiting_list.display_list();
 
+    //Waiting list testing ------
+    cout << endl << "Testing waiting list..." << endl;
+
+    WaitingList queue_test;
+    queue_test.enqueue({"A01", "A"});
+    queue_test.enqueue({"B02", "B"});
+    queue_test.enqueue({"C03", "C"});
+    queue_test.display_list();
+
+    students next;
+    for (int i = 0; i < 4; i++)
+    {
+        if (queue_test.next_student(next))
+        {
+            next.print();
+            cout << endl;
+        }
+        else
+            cout << "false (empty)" << endl;
+    }
+    queue_test.display_list();
+    // end of waiting list testing -------
+
+    /*
     //Reservation testing ------
     cout << endl;
     cout << "Testing Reservation system..." << endl;
@@ -79,5 +103,6 @@ int main()
 
 
     // end of reservation testing ------- 
+    */
       
 }
