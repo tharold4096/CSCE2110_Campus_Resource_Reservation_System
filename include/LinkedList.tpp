@@ -2,7 +2,7 @@
 
 //Default constructor
 template <typename T>
-LinkedList<T>::LinkedList() : head(nullptr) {}
+LinkedList<T>::LinkedList() : head(nullptr), list_size=0 {}
 
 //Destructor
 template <typename T>
@@ -21,6 +21,7 @@ template <typename T>
 void LinkedList<T>::insert_at_beginning(const T& value)
 {
     head = new Node(value, head);
+    list_size++;
 }
 
 //Insert function to add a new node to the end of the list
@@ -40,6 +41,8 @@ void LinkedList<T>::insert_at_end(const T& value)
         current = current->next;
 
     current->next = node;
+
+    list_size++;
 }
 
 //Function to insert node after specific node
@@ -54,6 +57,7 @@ void LinkedList<T>::insert_after(const T& target, const T& value)
         return;
 
     current->next = new Node(value, current->next);
+    list_size++
 }
 
 template <typename T>
@@ -78,6 +82,7 @@ bool LinkedList<T>::remove(const T& value)
         previous->next = current->next;
 
     delete current;
+    list_size--;
     return true;
 }
 
@@ -111,7 +116,7 @@ std::vector<T> LinkedList<T>::get_all() const
 }
 
 template <typename T>
-bool LinkedList<T>::remove_front(T& out)
+bool LinkedList<T>::remove_front()
 {
     if (head == nullptr)
         return false;
@@ -119,6 +124,7 @@ bool LinkedList<T>::remove_front(T& out)
     out =node->data;
     head = head->next;
     delete node;
+    list_size--;
     return true;
 }
 
@@ -126,4 +132,17 @@ template <typename T>
 bool LinkedList<T>::is_empty() const
 {
     return head == nullptr;
+}
+
+template <typename T>
+T LinkedList<T>::get_head() const 
+{
+    return head;
+}
+
+template <typename T>
+
+int LinkedList<T>::get_size() const
+{
+    return list_size;
 }

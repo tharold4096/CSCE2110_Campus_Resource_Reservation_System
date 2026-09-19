@@ -2,7 +2,6 @@
 #define WAITINGLIST_H
 
 #include "LinkedList.h"
-#include <iostream>
 #include "Students.h"
 
 using namespace std;
@@ -15,10 +14,11 @@ class WaitingList
     public:
         WaitingList();
         void enqueue(students student);
-        //void remove_student(students student);
+        bool remove_student(students student);
 
         bool next_student(students& out);
         void display_list() const;
+        bool is_empty() const;
 
 
 };

@@ -1,6 +1,7 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 
+#include <string>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -11,6 +12,7 @@ template <typename T>
 class LinkedList
 {
     private:
+        int list_size;
         struct Node
         {
             T data;
@@ -31,8 +33,10 @@ class LinkedList
         bool remove(const T& value);
         void print_list() const;
         std::vector<T> get_all() const;
-        bool remove_front(T& out);
+        bool remove_front();
         bool is_empty() const;
+        T get_head() const;
+        int get_size() const;
 };
 
 #include "LinkedList.tpp"

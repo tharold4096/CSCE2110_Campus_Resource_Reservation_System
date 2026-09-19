@@ -18,17 +18,12 @@ void WaitingList::display_list() const {
 
 bool WaitingList::remove_student(students student)
 {
-    list.remove(student);
+    return list.remove(student);
 
 }
 
 bool WaitingList::is_empty() const {
-    
-    if(list.get_all().empty())
-    {
-        return true;
-    }
 
-    return false;
+    return list.is_empty();
     
 }
