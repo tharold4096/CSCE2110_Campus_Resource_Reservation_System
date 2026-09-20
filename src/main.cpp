@@ -144,6 +144,13 @@ int main()
 
  
 
+    cout << endl;
+    manager.undo_cancel();          //restores R001
+    manager.display_reservations();
+
+    cout << endl;
+    if (!manager.undo_cancel())     //stack is empty
+        cout << "Nothing left to restore." << endl;
 
     
 }
