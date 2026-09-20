@@ -38,7 +38,13 @@ int main()
 
     cout << "Enter choice: ";
     cin >> choice;
-    
+
+    if (cin.eof())
+    {
+        cout << "Exiting program." << endl;
+        break;
+    }
+
     if (cin.fail())
     {
         cin.clear();
@@ -80,8 +86,13 @@ int main()
                 students student{student_id, student_name};
                 
                 Reservation reservation(reservation_id, student, resource_id, date);
-               
-                manager.create_reservation(reservation);
+
+                if (!manager.create_reservation(reservation)
+                    && manager.is_resource_taken(resource_id, date))
+                {
+                    if (waiting_list.enqueue(student))
+                        cout << "Student added to the waiting list for " << resource_id << "." << endl;
+                }
 
         
                 
@@ -121,7 +132,8 @@ int main()
                 getline(cin, wait_student_name);
 
                 students wait_student{wait_student_id, wait_student_name};
-                waiting_list.enqueue(wait_student);
+                if (waiting_list.enqueue(wait_student))
+                    cout << "Student added to waiting list." << endl;
 
                 break;
             }
@@ -141,16 +153,4 @@ int main()
         }
 
     }
-
- 
-
-    cout << endl;
-    manager.undo_cancel();          //restores R001
-    manager.display_reservations();
-
-    cout << endl;
-    if (!manager.undo_cancel())     //stack is empty
-        cout << "Nothing left to restore." << endl;
-
-    
 }

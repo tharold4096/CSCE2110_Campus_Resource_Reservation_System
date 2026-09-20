@@ -33,6 +33,7 @@ bool Cancellations::restore_canceled(ReservationManager& manager)
 
     if(is_empty())
     {
+        cout << "No cancellations to restore." << endl;
         return false;
     }
     Reservation temp = peek();

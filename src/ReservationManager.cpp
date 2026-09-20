@@ -58,6 +58,19 @@ bool ReservationManager::validate_reservation(const Reservation& reservation) co
 
 
 
+bool ReservationManager::is_resource_taken(const string& resource_id, const string& date) const {
+	vector<Reservation> all_reservations = reservations.get_all();
+
+	for (const Reservation& existing : all_reservations) {
+		if (existing.get_resource_id() == resource_id && existing.get_date() == date) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+
 // displays all active res if not empty 
 void ReservationManager::display_reservations() const {
 	vector<Reservation> all_reservations = reservations.get_all();
