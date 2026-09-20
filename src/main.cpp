@@ -67,54 +67,75 @@ int main()
     queue_test.display_list();
     // end of waiting list testing -------
 
-    /*
+    //Waiting list edge cases ------
+    cout << endl << "Testing waiting list edge cases..." << endl;
+
+    WaitingList waitlist;
+    waitlist.enqueue({"A01", "A"});
+    waitlist.enqueue({"B02", "B"});
+    waitlist.enqueue({"A01", "A"});          //duplicate, should be rejected
+    waitlist.display_list();
+
+    students front;
+    if (waitlist.peek(front))
+    {
+        cout << "Front of list: ";
+        front.print();
+        cout << endl;
+    }
+
+    waitlist.remove_student({"B02", "B"});   //remove by id
+    waitlist.remove_student({"Z99", "Z"});   //not on the list
+    waitlist.display_list();
+    // end of waiting list edge cases -------
+
     //Reservation testing ------
     cout << endl;
     cout << "Testing Reservation system..." << endl;
 
-    Reservation reservation1(
-        "R001",
-        student,
-        "Room101",
-        "09/20/2026"
-    );
     ReservationManager manager;
 
+    Reservation reservation1("R001", student, "R101", "09/20/2026");
+    Reservation reservation2("R002", student, "R101", "09/20/2026");   //same room and date
+    Reservation reservation3("R003", student, "R101", "09/21/2026");
+    Reservation reservation4("", student, "", "");                     //missing fields
+
     manager.create_reservation(reservation1);
-
-    //test #2 duplicate 
-    Reservation reservation2(
-        "R002",
-        student,
-        "Room101",
-        "09/20/2026"
-    );
-
     manager.create_reservation(reservation2);
-    
-    //test #3 valid different data
-    Reservation reservation3(
-        "R003",
-        student,
-        "Room101",
-        "09/21/2026"
-
-    );
-
     manager.create_reservation(reservation3);
+    manager.create_reservation(reservation4);
 
     cout << endl;
     manager.display_reservations();
+    // end of reservation testing -------
 
+    //Cancellation and undo testing ------
     cout << endl;
+    cout << "Testing cancellation and undo..." << endl;
+
     manager.cancel_reservation(reservation1);
+    manager.cancel_reservation(Reservation("R999", student, "R101", "09/22/2026"));   //not found
 
     cout << endl;
     manager.display_reservations();
 
+    cout << endl;
+    cout << "Cancellation history:" << endl;
+    manager.display_cancellations();
 
+    cout << endl;
+    manager.undo_cancel();          //restores R001
+    manager.display_reservations();
 
-    // end of reservation testing ------- 
-    */
+    cout << endl;
+    if (!manager.undo_cancel())     //stack is empty
+        cout << "Nothing left to restore." << endl;
+
+    //undo blocked because the slot was taken again
+    cout << endl;
+    manager.cancel_reservation(reservation3);
+    manager.create_reservation(Reservation("R004", student, "R101", "09/21/2026"));
+    manager.undo_cancel();
+    // end of cancellation and undo testing -------
       
 }
