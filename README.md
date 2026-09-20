@@ -1,18 +1,18 @@
 # CSCE2110\_Campus\_Resource\_Reservation\_System
 
-\## Building
+## Building
 
 
 
-\### Requirements
+## Requirements
 
-\- g++ with C++17 support (verified on g++ 11.4.0, UNT CSE cell machines)
+- g++ with C++17 support
 
-\- CMake 3.x or newer — optional, see manual build below
+- CMake 3.x or newer — optional
 
 
 
-\### Build with CMake
+## Build with CMake
 
 ```
 
@@ -24,23 +24,22 @@ cmake --build build
 
 
 
-\### Build without CMake
+## Build without CMake
 
-For machines where CMake is unavailable (e.g. the UNT CSE cell machines):
+For machines where CMake is unavailable:
 
 ```
 
 mkdir -p build
 
 g++ -std=c++17 -Iinclude -Wall -Wextra -o build/CampusResourceReservationSystem src/\*.cpp
-
 ```
 
 
 
-\### Running
+## Running
 
-Run from the repository root, \*\*not\*\* from `build/` — the program loads
+Run from the repository root
 
 `data/resources.txt` by relative path.
 
