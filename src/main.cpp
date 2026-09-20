@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include<limits>
 #include "Reservation.h"
 #include "Students.h"
 #include "WaitingList.h"
@@ -15,106 +16,134 @@ using namespace std;
 
 int main() 
 {
-    cout << "Welcome to the Campus Resource Reservation System!" << endl;
-    cout << endl;
-    cout << "Testing Resource Management..." << endl;
+ int choice = 0;
 
-    ResourceManager resource_manager;
+ ResourceManager resource_manager;
+ resource_manager.load_resources("data/resources.txt");
+ ReservationManager manager;
+ WaitingList waiting_list;
 
-    if(resource_manager.load_resources("data/resources.txt"))
+ while (choice != 9)
+ {
+    cout << "=====Campus Resource Reservation System=====" << endl;
+    cout << "1. View Resources" << endl;
+    cout << "2. Create Reservation" << endl;
+    cout << "3. Cancel Reservation" << endl;
+    cout << "4. View Active Reservations" << endl;
+    cout << "5. View Waiting List" << endl;
+    cout << "6. Add Student to Waiting List" << endl;
+    cout << "7. Undo Cancellation" << endl;
+    cout << "8. View Cancellation History" << endl;
+    cout << "9. Exit" << endl;
+
+    cout << "Enter choice: ";
+    cin >> choice;
+    
+    if (cin.fail())
     {
-        resource_manager.display_resources();
-
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        cout << "Invalid choice" << endl;
+        choice = 0;
+        continue;
     }
-    cout << endl;
 
-    string student_name;
-    cout << "Enter student name: ";
-    
-    getline(cin, student_name);
-
-    string student_id;
-    cout << "Enter student ID: ";
-    
-    getline(cin, student_id);
-
-    students student{student_id, student_name};
-
-    WaitingList waiting_list;
-    waiting_list.enqueue(student);
-    waiting_list.display_list();
-
-    //Waiting list testing ------
-    cout << endl << "Testing waiting list..." << endl;
-
-    WaitingList queue_test;
-    queue_test.enqueue({"A01", "A"});
-    queue_test.enqueue({"B02", "B"});
-    queue_test.enqueue({"C03", "C"});
-    queue_test.display_list();
-
-    students next;
-    for (int i = 0; i < 4; i++)
-    {
-        if (queue_test.dequeue(next))
+    switch(choice)
         {
-            next.print();
-            cout << endl;
+            case 1:
+                resource_manager.display_resources();
+                break;
+            case 2:
+            {
+                string reservation_id;
+
+                cout << "Enter reservation ID: ";
+                cin >> reservation_id;
+
+                string student_id;
+                cout << "Enter student ID: ";
+                cin >> student_id;
+
+                string student_name;
+                cout << "Enter student name: ";
+                cin.ignore();
+                getline(cin, student_name);
+
+                string resource_id;
+                cout << "Enter resource ID: ";
+                cin >> resource_id;
+
+                string date;
+                cout << "Enter date: ";
+                cin >> date;
+
+                students student{student_id, student_name};
+                
+                Reservation reservation(reservation_id, student, resource_id, date);
+               
+                manager.create_reservation(reservation);
+
+        
+                
+                break;
+            }    
+            case 3:
+                {
+                    string cancel_id;
+                    cout << "Enter reservation ID to cancel: ";
+                    cin >> cancel_id;
+
+                    students temp_student{"", ""};
+
+                    Reservation temp_reservation(cancel_id, temp_student, "", "");
+                    manager.cancel_reservation(temp_reservation);
+
+                
+                break;
+                }
+            case 4:
+                manager.display_reservations();
+                break;
+            case 5:
+                waiting_list.display_list();
+                break;
+            case 6:
+            {
+                string wait_student_id;
+
+                cout << "Enter student ID: ";
+                cin >> wait_student_id;
+            
+                string wait_student_name;
+
+                cout << "Enter student name: ";
+                cin.ignore();
+                getline(cin, wait_student_name);
+
+                students wait_student{wait_student_id, wait_student_name};
+                waiting_list.enqueue(wait_student);
+
+                break;
+            }
+            case 7:
+                manager.undo_cancel();
+                break;
+            case 8:
+                manager.display_cancellations();
+                break;
+            case 9:
+                cout << "Exiting program." << endl;
+                break;
+
+            default:
+                cout << "Invalid choice" << endl;
+                
         }
-        else
-            cout << "false (empty)" << endl;
+
     }
-    queue_test.display_list();
-    // end of waiting list testing -------
 
-    /*
-    //Reservation testing ------
-    cout << endl;
-    cout << "Testing Reservation system..." << endl;
+ 
 
-    Reservation reservation1(
-        "R001",
-        student,
-        "Room101",
-        "09/20/2026"
-    );
-    ReservationManager manager;
 
-    manager.create_reservation(reservation1);
-
-    //test #2 duplicate 
-    Reservation reservation2(
-        "R002",
-        student,
-        "Room101",
-        "09/20/2026"
-    );
-
-    manager.create_reservation(reservation2);
     
-    //test #3 valid different data
-    Reservation reservation3(
-        "R003",
-        student,
-        "Room101",
-        "09/21/2026"
-
-    );
-
-    manager.create_reservation(reservation3);
-
-    cout << endl;
-    manager.display_reservations();
-
-    cout << endl;
-    manager.cancel_reservation(reservation1);
-
-    cout << endl;
-    manager.display_reservations();
-
-
-
-    // end of reservation testing ------- 
-    */
-      
 }
