@@ -14,6 +14,7 @@ class ResourceManager
     public:
         bool load_resources(const string& filename);
         void display_resources() const;
+        const Resource* find_resource(const string& id) const;
 };
 
 #endif // RESOURCEMANAGER_H
