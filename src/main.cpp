@@ -17,6 +17,7 @@ using namespace std;
 
 int read_int(const string& prompt, int min, int max);
 bool valid_date(const string& date);
+string generate_reservation_id();
 
 int main() 
 {
@@ -78,8 +79,7 @@ int main()
             {
                 string reservation_id;
 
-                cout << "Enter reservation ID: ";
-                cin >> reservation_id;
+                reservation_id =generate_reservation_id();
 
                 string student_id;
                 cout << "Enter student ID: ";
@@ -348,4 +348,10 @@ bool valid_date(const string& date) {
         if (!isdigit(date[i])) return false;
     }
     return true;
+}
+
+
+string generate_reservation_id() {
+    static int counter = 1;
+    return "RES" + to_string(counter++);
 }
