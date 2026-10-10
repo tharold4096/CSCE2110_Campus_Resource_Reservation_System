@@ -10,7 +10,6 @@ class WaitingList
 {
     private:
         LinkedList<students> list;
-
     public:
         WaitingList();
         bool enqueue(students student);
@@ -19,6 +18,8 @@ class WaitingList
         bool dequeue(students& out);
         void display_list() const;
         bool is_empty() const;
+        int size() const {return list.get_size();}
+
 
 
 };

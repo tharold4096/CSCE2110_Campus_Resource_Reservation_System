@@ -6,6 +6,31 @@
 
 using namespace std;
 
+
+int ResourceManager::find_index(const string& id) const
+{
+    int left = 0;
+    int right = static_cast<int>(resources.size()) -1;
+
+    while(left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (resources[mid].get_resource_id() == id)
+        {
+            return mid;
+        }
+        else if (id < resources[mid].get_resource_id())
+        {
+            right = mid - 1;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+    return -1;
+}
+
 bool ResourceManager:: load_resources(const string& filename)
 {
     ifstream file(filename);
@@ -40,6 +65,7 @@ bool ResourceManager:: load_resources(const string& filename)
         Resource resource(id, name, type, available);
         resources.push_back(resource);
     }
+    // TODO(sorting): sort by ID here to facilitate binary search in find_index()
     file.close();
     return true;
 }
@@ -52,32 +78,24 @@ void ResourceManager:: display_resources() const
 
     }
 }
+
 const Resource* ResourceManager::find_resource(const string& id) const
 {
-    int left = 0;
-    int right = static_cast<int>(resources.size()) -1;
-
-    while(left <= right)
-    {
-        int mid = left + (right - left) / 2;
-        if (resources[mid].get_resource_id() == id)
-        {
-            return &resources[mid];
-        }
-        else if (id < resources[mid].get_resource_id())
-        {
-            right = mid - 1;
-        }
-        else
-        {
-            left = mid + 1;
-        }
-    
-
-    }
-    return nullptr;
+    int i = find_index(id);
+    return (i == -1) ? nullptr : &resources[i];
 
 }
 
+Resource* ResourceManager::find_resource_mutable(const string& id)
+{
+    int i = find_index(id);
+    return (i == -1) ? nullptr : &resources[i];
+}
 
+
+
+const vector<Resource>& ResourceManager::get_all_resources() const
+{
+    return resources;
+}
     

@@ -15,6 +15,7 @@ add_executable(CampusResourceReservationSystem
     src/Cancellations.cpp
     src/Resource.cpp
     src/ResourceManager.cpp
+    src/ReportGenerator.cpp
 
 )
 
