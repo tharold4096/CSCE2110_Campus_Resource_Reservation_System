@@ -6,7 +6,6 @@ ReportGenerator::ReportGenerator(const ResourceManager& rm, const ReservationMan
 
 void ReportGenerator::active_reservations() const
 {
-    cout << "Active Reservations:" << endl;
     // TODO After Adrian puts sorting in, uncomment this:
     /*
          vector<Reservation> sorted = reservations.get_all_reservations();
@@ -59,8 +58,9 @@ void ReportGenerator::waitlist_statistics() const
         for (const auto& wl_pair : wl_map)
         {
             const WaitingList& wl = wl_pair.second;
-        
-            cout << "Resource ID: " << resource_id << ", Waiting List Size: " << wl.size() << endl;
+            if (wl.is_empty())
+                continue;
+            cout << "Resource ID: " << resource_id << " | Date: " << wl_pair.first << " | Waiting List Size: " << wl.size() << endl;
             students next;
             if (wl.peek(next))
                 cout << "Next Student: " << next.student_id << " | " << next.student_name << endl;
@@ -77,13 +77,15 @@ void ReportGenerator::waitlist_statistics() const
         for (const auto& wl_pair : wl_map)
         {
             const WaitingList& wl = wl_pair.second;
+            if (wl.is_empty())
+                continue;
             total_waiting += wl.size();
             if (wl.size() > longest_queue_size)
             {
                 longest_queue_size = wl.size();
                 longest_queue_resource = resource_id + " on " + wl_pair.first;
                 //longest_queue_resource = resource_id;
-                cout << "New longest queue: Resource ID " << longest_queue_resource << " with " << longest_queue_size << " students" << endl;
+                //cout << "New longest queue: Resource ID " << longest_queue_resource << " with " << longest_queue_size << " students" << endl;
             }
         }
     }

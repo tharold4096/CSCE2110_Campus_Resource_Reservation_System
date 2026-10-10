@@ -110,7 +110,6 @@ bool ReservationManager::cancel_reservation(const string& reservation_id, Reserv
 	reservations.remove(reservation_found);
 	cancellation.push(reservation_found);
 	cancelled = reservation_found;
-	cout << "Reservation cancelled successfully. " << endl;
 	return true;
 }
 

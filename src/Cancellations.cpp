@@ -47,21 +47,16 @@ bool Cancellations::restore_canceled(ReservationManager& manager)
 
     bool outcome = manager.create_reservation(temp);
 
+    
     if(!outcome)
     {
+        pop(); // discard the failed restore from the cancelled stack
         return false;
     }
     else{
-        cout << "Reservation restored" << endl;
-        if(pop())
-        {
-            cout << "Cancellation removed from history" << endl;
-            return true;
-        }
-        else
-        {
-            cout << "Cancellation could not be restored, discarded from history" << endl;
-        }
+        
+        pop();
+        return true;
     }
     return false;
 }

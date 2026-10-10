@@ -184,9 +184,10 @@ int main()
                 manager.display_cancellations();
                 break;
             case 8: 
-               
+            {
                 for (const auto& pair : waiting_lists)
                 {
+                    bool any_waiting = false;
                     const string& resource_id = pair.first;
                     const auto& inner_map = pair.second;
                     for (const auto& inner_pair : inner_map)
@@ -194,11 +195,14 @@ int main()
                         const string& date = inner_pair.first;
                         const WaitingList& wl = inner_pair.second;
                         if (wl.is_empty()) continue;
+                        any_waiting = true;
                         cout << "Resource ID: " << resource_id << " | Date: " << date << endl;
                         wl.display_list();
                     }
+                    if (!any_waiting) cout << "No students are waiting." << endl;
                 }
                 break;
+            }
             case 9: 
                      
             {
@@ -230,17 +234,22 @@ int main()
                     cout << "No waiting list for " << resource_id << " on " << date << "." << endl;
                     break;
                 }
-
                 if(slot->second.remove_student(removed_student))
                 {
+                    /*
                     cout << "Student removed from waiting list." << endl;
                     cout << "Student ID: " << removed_student.student_id << endl;
                     cout << "Student Name: " << removed_student.student_name << endl;
+                    */
+
+                    cout << "Student " << removed_student.student_id << " withdrawn from the waiting list for "
+                         << resource_id << " on " << date << "." << endl;
 
                 }
                 else
                 {
-                    cout << "Waiting list is empty." << endl;
+                    cout << "Student " << removed_student.student_id << " is not on the waiting list for "
+                         << resource_id << " on " << date << "." << endl;
 
                 }
                 break;
