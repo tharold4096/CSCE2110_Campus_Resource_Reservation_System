@@ -23,7 +23,7 @@ int main()
  ReservationManager manager;
  WaitingList waiting_list;
 
- while (choice != 9)
+ while (choice != 11)
  {
     cout << "=====Campus Resource Reservation System=====" << endl;
     cout << "1. View Resources" << endl;
@@ -34,7 +34,9 @@ int main()
     cout << "6. Add Student to Waiting List" << endl;
     cout << "7. Undo Cancellation" << endl;
     cout << "8. View Cancellation History" << endl;
-    cout << "9. Exit" << endl;
+    cout << "9. Search Resource by ID" << endl;
+    cout << "10. Remove Student from Waiting List" << endl;
+    cout << "11. Exit" << endl;
 
     cout << "Enter choice: ";
     cin >> choice;
@@ -144,6 +146,46 @@ int main()
                 manager.display_cancellations();
                 break;
             case 9:
+                {
+                    string search_id;
+
+                    cout << "Enter resource ID to search; ";
+                    cin >> search_id;
+
+                    const Resource* found = resource_manager.find_resource(search_id);
+
+                    if(found != nullptr)
+                    {
+                        cout << "Resource found:" << endl;
+                        found->print();
+
+                    }
+                    else
+                    {
+                        cout << "Resource not found." << endl;
+                    }
+                    break;
+                }
+            case 10:
+            {
+                students removed_student;
+
+                if(waiting_list.dequeue(removed_student))
+                {
+                    cout << "Student removed from waiting list." << endl;
+                    cout << "Student ID: " << removed_student.student_id << endl;
+                    cout << "Student Name: " << removed_student.student_name << endl;
+
+                }
+                else
+                {
+                    cout << "Waiting list is empty." << endl;
+
+                }
+                break;
+            }
+            
+            case 11: 
                 cout << "Exiting program." << endl;
                 break;
 
