@@ -52,7 +52,6 @@ void ReportGenerator::most_requested_resources(int top_n) const
 void ReportGenerator::waitlist_statistics() const
 {
     cout << "Waitlist Statistics:" << endl;
-    // TODO correct logic on waitinglist reporting
     for (const auto& resource_pair : waiting_lists)
     {
         const string& resource_id = resource_pair.first;
@@ -82,7 +81,9 @@ void ReportGenerator::waitlist_statistics() const
             if (wl.size() > longest_queue_size)
             {
                 longest_queue_size = wl.size();
-                longest_queue_resource = resource_id;
+                longest_queue_resource = resource_id + " on " + wl_pair.first;
+                //longest_queue_resource = resource_id;
+                cout << "New longest queue: Resource ID " << longest_queue_resource << " with " << longest_queue_size << " students" << endl;
             }
         }
     }

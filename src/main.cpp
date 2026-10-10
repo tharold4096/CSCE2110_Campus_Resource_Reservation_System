@@ -16,6 +16,7 @@
 using namespace std;
 
 int read_int(const string& prompt, int min, int max);
+bool valid_date(const string& date);
 
 int main() 
 {
@@ -94,9 +95,12 @@ int main()
                 cin >> resource_id;
 
                 string date;
-                cout << "Enter date: ";
+                cout << "Enter date (YYYY-MM-DD): ";
                 cin >> date;
-
+                if (!valid_date(date)) {
+                    cout << "Invalid date format. Please enter in YYYY-MM-DD format." << endl;
+                    break;
+                }
                 students student{student_id, student_name};
 
                 
@@ -118,8 +122,9 @@ int main()
                 if (!manager.create_reservation(reservation)
                     && manager.is_resource_taken(resource_id, date))
                 {
-                    if (waiting_lists[resource_id].enqueue(student))
-                        cout << "Student added to the waiting list for " << resource_id << "." << endl;
+                    
+                    if (waiting_lists[resource_id][date].enqueue(student))
+                        cout << "Student added to the waiting list for " << resource_id << " on " << date << endl;
                 }
 
         
@@ -132,16 +137,45 @@ int main()
                     cout << "Enter reservation ID to cancel: ";
                     cin >> cancel_id;
 
-                    students temp_student{"", ""};
+                    
+                    Reservation cancelled("", students{"", ""}, "", "");
+                    if (!manager.cancel_reservation(cancel_id, cancelled))
+                        break;
+                    cout << "Reservation cancelled successfully." << endl;
 
-                    Reservation temp_reservation(cancel_id, temp_student, "", "");
-                    manager.cancel_reservation(temp_reservation);
+                    //Create variables based on the most recent canceled reservation, passed from the updated method
+                    const string resource_id = cancelled.get_resource_id();           
+                    const string date = cancelled.get_date();
 
+                    // Search the waiting list outer map for the matching resource id, breaking if end is reached.
+                    auto res_it = waiting_lists.find(resource_id);               
+                    if(res_it == waiting_lists.end())
+                        break;
+                    
+                    // Search the inner map for the matching data, breaking if the end is reached.
+                    auto slot_it = res_it->second.find(date);
+                    if(slot_it == res_it->second.end())
+                        break;
+
+                    //Dequeue the next student from the waiting list so that they can reserve the slot. 
+                    students next;
+                    if (!slot_it->second.dequeue(next))
+                        break;
+
+                    //Create the promoted reservation based on that student
+                    Reservation promoted(cancelled.get_reservation_id(), next, resource_id, date);
+                    if (manager.create_reservation(promoted))
+                        cout << "Promoted " << next.student_name << " (" << next.student_id
+                             << ") from the waiting list for " << resource_id << " on " << date << "." << endl;
                 
                 break;
                 }
             case 5: 
-                manager.undo_cancel();
+                //Undoing fails if the queue already moved forward.
+                if(manager.undo_cancel())
+                    cout << "Reservation restored." << endl;
+                else
+                    cout << "Nothing to undo, or the slot was given to the next waiting student." << endl;
                 break;
             case 6: 
                 manager.display_reservations();
@@ -150,12 +184,19 @@ int main()
                 manager.display_cancellations();
                 break;
             case 8: 
+               
                 for (const auto& pair : waiting_lists)
                 {
                     const string& resource_id = pair.first;
-                    const WaitingList& wl = pair.second;
-                    cout << "Resource ID: " << resource_id << endl;
-                    wl.display_list();
+                    const auto& inner_map = pair.second;
+                    for (const auto& inner_pair : inner_map)
+                    {
+                        const string& date = inner_pair.first;
+                        const WaitingList& wl = inner_pair.second;
+                        if (wl.is_empty()) continue;
+                        cout << "Resource ID: " << resource_id << " | Date: " << date << endl;
+                        wl.display_list();
+                    }
                 }
                 break;
             case 9: 
@@ -170,17 +211,27 @@ int main()
                 cin >> date;
                 cout << "Enter Student ID: ";
                 cin >> removed_student.student_id;
-                cout << "Enter Student Name: ";
-                cin >> removed_student.student_name;
+                
+
+                if(!valid_date(date)) {
+                    cout << "Invalid date format." << endl;
+                    break;
+                }
+
                 auto it = waiting_lists.find(resource_id);
                 if (it == waiting_lists.end())
                 {
                     cout << "No waiting list for " << resource_id << "." << endl;
                     break;
                 }
+                auto slot = it->second.find(date);
+                if (slot == it->second.end())
+                {
+                    cout << "No waiting list for " << resource_id << " on " << date << "." << endl;
+                    break;
+                }
 
-                
-                if(it->second.dequeue(removed_student))
+                if(slot->second.remove_student(removed_student))
                 {
                     cout << "Student removed from waiting list." << endl;
                     cout << "Student ID: " << removed_student.student_id << endl;
@@ -277,4 +328,15 @@ int read_int(const string& prompt, int min, int max) {
 
         return value;
     }
+}
+
+bool valid_date(const string& date) {
+    // Check for YYYY-MM-DD format
+    if (date.size() != 10) return false;
+    if (date[4] != '-' || date[7] != '-') return false;
+    for (size_t i = 0; i < date.size(); ++i) {
+        if (i == 4 || i == 7) continue;
+        if (!isdigit(date[i])) return false;
+    }
+    return true;
 }

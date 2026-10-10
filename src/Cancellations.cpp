@@ -49,7 +49,6 @@ bool Cancellations::restore_canceled(ReservationManager& manager)
 
     if(!outcome)
     {
-        cout << "Reservation could not be restored" << endl;
         return false;
     }
     else{
