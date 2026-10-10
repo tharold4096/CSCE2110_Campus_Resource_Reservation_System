@@ -10,10 +10,15 @@ class ResourceManager
 {
     private:
         vector<Resource> resources;
+        
+        void merge_sort(int left, int right);
+        void merge(int left, int middle, int right);
 
     public:
         bool load_resources(const string& filename);
         void display_resources() const;
+        void sort_resources_by_name();
+
 };
 
 #endif // RESOURCEMANAGER_H
