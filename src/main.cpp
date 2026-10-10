@@ -86,9 +86,23 @@ int main()
                 cin >> date;
 
                 students student{student_id, student_name};
-                
-                Reservation reservation(reservation_id, student, resource_id, date);
 
+                
+
+                Resource* res = resource_manager.find_resource_mutable(resource_id);
+                if (res == nullptr)
+                {
+                    cout << "Resource not found." << endl;
+                    break;
+                }
+                if (!res->get_availability())
+                {
+                    cout << "Resource is unavailable." << endl;
+                    break;
+                }
+                res->increment_request_count();
+
+                Reservation reservation(reservation_id, student, resource_id, date);
                 if (!manager.create_reservation(reservation)
                     && manager.is_resource_taken(resource_id, date))
                 {
@@ -144,6 +158,12 @@ int main()
                 getline(cin, wait_student_name);
 
                 students wait_student{wait_student_id, wait_student_name};
+                
+                if (resource_manager.find_resource(resource_id) == nullptr)
+                {
+                    cout << "Resource not found." << endl;
+                    break;
+                }
                 if (waiting_lists[resource_id].enqueue(wait_student))
                     cout << "Student added to the waiting list for " << resource_id << "." << endl;
 
@@ -184,7 +204,13 @@ int main()
                 cout << "Enter resource ID: ";
                 cin >> resource_id;
 
-                if(waiting_lists[resource_id].dequeue(removed_student))
+                auto it = waiting_lists.find(resource_id);
+                if (it == waiting_lists.end())
+                {
+                    cout << "No waiting list for " << resource_id << "." << endl;
+                    break;
+                }
+                if(it->second.dequeue(removed_student))
                 {
                     cout << "Student removed from waiting list." << endl;
                     cout << "Student ID: " << removed_student.student_id << endl;

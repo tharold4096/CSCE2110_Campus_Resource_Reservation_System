@@ -13,13 +13,24 @@ void ReportGenerator::active_reservations() const
 void ReportGenerator::resource_utilization() const
 {
     cout << "Resource Utilization:" << endl;
-    resources.display_resources();
+    for(int i = 0; i < resources.get_all_resources().size(); i++)
+    {
+        const Resource& resource = resources.get_all_resources()[i];
+        cout << "ID: " << resource.get_resource_id() << " | Name: " << resource.get_resource_name() << " | Active Reservations: " << resource.get_request_count() << endl;
+    }
 }
 
 void ReportGenerator::most_requested_resources(int top_n) const
 {
     cout << "Most Requested Resources (Top " << top_n << "):" << endl;
-    resources.display_resources(top_n);
+    vector<Resource> sorted = resources.get_all_resources();
+    merge_sort(sorted, [](const Resource& a, const Resource& b)
+               { return a.get_request_count() > b.get_request_count(); });
+    for(int i = 0; i < top_n && i < sorted.size(); i++)
+    {
+        const Resource& resource = sorted[i];
+        cout << "ID: " << resource.get_resource_id() << " | Name: " << resource.get_resource_name() << " | Active Reservations: " << resource.get_request_count() << endl;
+    }
 }
 
 void ReportGenerator::waitlist_statistics() const
