@@ -79,5 +79,29 @@ const Resource* ResourceManager::find_resource(const string& id) const
 
 }
 
+Resource* ResourceManager::find_resource_mutable(const string& id)
+{
+    int left = 0;
+    int right = static_cast<int>(resources.size()) -1;
+
+    while(left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (resources[mid].get_resource_id() == id)
+        {
+            return &resources[mid];
+        }
+        else if (id < resources[mid].get_resource_id())
+        {
+            right = mid - 1;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+    return nullptr;
+}
+
 
     
