@@ -25,6 +25,7 @@ int main()
 
  ReportGenerator report_generator(resource_manager, manager, waiting_lists);
 
+ //IMPORTANT: MENU IS NOT FUNCTIONAL. NEED TO FINISH LOGIC BEFORE SUBMISSION
  while (choice != 0)
  {
     cout << "=====Campus Resource Reservation System=====" << endl;
@@ -37,9 +38,9 @@ int main()
     cout << "6. View Active Reservations" << endl;
     cout << "7. View Cancellation History" << endl;
     cout << "8. View Waiting List" << endl;
-    cout << "6. Add Student to Waiting List" << endl;
-    cout << "10. Remove Student from Waiting List" << endl;
-    cout << "11. Reports" << endl;
+    //cout << "6. Add Student to Waiting List" << endl;
+    cout << "9. Withdrawal from list" << endl;
+    cout << "10. Reports" << endl;
     
 
     cout << "Enter choice: ";
