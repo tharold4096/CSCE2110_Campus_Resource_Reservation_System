@@ -21,25 +21,15 @@ void ReportGenerator::active_reservations() const
 
 void ReportGenerator::resource_utilization() const
 {
-    cout << "Resource Utilization:" << endl;
-    
-
-    //TODO After Adrian impliments sorting, Replace bottom for loop with below code instead
-    /*
-         map<string, int> counts;
-         for (const Reservation& r : reservations.get_all_reservations())
-             counts[r.get_resource_id()]++;
-         for (const Resource& res : resources.get_all_resources())
-         {
-             auto it = counts.find(res.get_resource_id());
-             int active = (it == counts.end()) ? 0 : it->second;
-             ...print ID | Name | Active Reservations: active
-         }
-    */
-    for(int i = 0; i < resources.get_all_resources().size(); i++)
+    cout << "Resource Utilization:" << endl;    
+    map<string, int> counts;
+    for (const Reservation& r : reservations.get_all_reservations())
+        counts[r.get_resource_id()]++;
+    for (const Resource& res : resources.get_all_resources())
     {
-        const Resource& resource = resources.get_all_resources()[i];
-        cout << "ID: " << resource.get_resource_id() << " | Name: " << resource.get_resource_name() << " | Active Reservations: " << resource.get_request_count() << endl;
+        auto it = counts.find(res.get_resource_id());
+        int active = (it == counts.end()) ? 0 : it->second;
+        cout << "ID: " << res.get_resource_id() << " | Name: " << res.get_resource_name() << " | Active Reservations: " << active << endl;
     }
 }
 

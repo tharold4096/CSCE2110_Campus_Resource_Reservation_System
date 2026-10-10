@@ -17,7 +17,7 @@ class ResourceManager
         
         const Resource* find_resource(const string& id) const;
 
-        vector<Resource>& get_all_resources() const;
+        const vector<Resource>& get_all_resources() const;
         Resource* find_resource_mutable(const string& id);
 };      
 

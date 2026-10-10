@@ -65,12 +65,7 @@ bool ResourceManager:: load_resources(const string& filename)
         Resource resource(id, name, type, available);
         resources.push_back(resource);
     }
-    // TODO(sorting): once Sorting.h merges, sort by ID here so find_index()'s binary search
-    // is valid whatever order the file is in (it only works now because resources.txt is
-    // already in order):
-    //     merge_sort(resources, [](const Resource& a, const Resource& b)
-    //         { return a.get_resource_id() < b.get_resource_id(); });
-    // Agree with your sorting partner on who adds this line.
+    // TODO(sorting): sort by ID here to facilitate binary search in find_index()
     file.close();
     return true;
 }
@@ -99,7 +94,7 @@ Resource* ResourceManager::find_resource_mutable(const string& id)
 
 
 
-vector<Resource>& ResourceManager::get_all_resources() const
+const vector<Resource>& ResourceManager::get_all_resources() const
 {
     return resources;
 }
