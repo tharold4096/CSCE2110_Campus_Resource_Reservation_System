@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include<limits>
+#include <cstdlib>
 #include "Reservation.h"
 #include "Students.h"
 #include "WaitingList.h"
@@ -14,9 +15,11 @@
 
 using namespace std;
 
+int read_int(const string& prompt, int min, int max);
+
 int main() 
 {
- int choice = 0;
+ int choice = -1;
 
  ResourceManager resource_manager;
  resource_manager.load_resources("data/resources.txt");
@@ -44,7 +47,7 @@ int main()
     
 
     cout << "Enter choice: ";
-    cin >> choice;
+    choice = read_int("Enter choice: ", 0, 10);
 
     if (cin.eof())
     {
@@ -57,16 +60,38 @@ int main()
         cin.clear();
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         cout << "Invalid choice" << endl;
-        choice = 0;
+        choice = -1;
         continue;
     }
 
+
     switch(choice)
         {
-            case 1:
+            case 1: 
                 resource_manager.display_resources();
                 break;
-            case 2:
+            case 2: 
+                {
+                    string search_id;
+
+                    cout << "Enter resource ID to search; ";
+                    cin >> search_id;
+
+                    const Resource* found = resource_manager.find_resource(search_id);
+
+                    if(found != nullptr)
+                    {
+                        cout << "Resource found:" << endl;
+                        found->print();
+
+                    }
+                    else
+                    {
+                        cout << "Resource not found." << endl;
+                    }
+                    break;
+                }
+            case 3: 
             {
                 string reservation_id;
 
@@ -119,7 +144,7 @@ int main()
                 
                 break;
             }    
-            case 3:
+            case 4: 
                 {
                     string cancel_id;
                     cout << "Enter reservation ID to cancel: ";
@@ -133,10 +158,16 @@ int main()
                 
                 break;
                 }
-            case 4:
+            case 5: 
+                manager.undo_cancel();
+                break;
+            case 6: 
                 manager.display_reservations();
                 break;
-            case 5:
+            case 7: 
+                manager.display_cancellations();
+                break;
+            case 8: 
                 for (const auto& pair : waiting_lists)
                 {
                     const string& resource_id = pair.first;
@@ -145,63 +176,8 @@ int main()
                     wl.display_list();
                 }
                 break;
-            case 6:
-            {
-                string wait_student_id;
-                string resource_id;
-
-                cout << "Enter student ID: ";
-                cin >> wait_student_id;
-                
-                cout << "Enter resource ID: ";
-                cin >> resource_id;
-            
-                string wait_student_name;
-
-                cout << "Enter student name: ";
-                cin.ignore();
-                getline(cin, wait_student_name);
-
-                students wait_student{wait_student_id, wait_student_name};
-                
-                if (resource_manager.find_resource(resource_id) == nullptr)
-                {
-                    cout << "Resource not found." << endl;
-                    break;
-                }
-                if (waiting_lists[resource_id].enqueue(wait_student))
-                    cout << "Student added to the waiting list for " << resource_id << "." << endl;
-
-                break;
-            }
-            case 7:
-                manager.undo_cancel();
-                break;
-            case 8:
-                manager.display_cancellations();
-                break;
-            case 9:
-                {
-                    string search_id;
-
-                    cout << "Enter resource ID to search; ";
-                    cin >> search_id;
-
-                    const Resource* found = resource_manager.find_resource(search_id);
-
-                    if(found != nullptr)
-                    {
-                        cout << "Resource found:" << endl;
-                        found->print();
-
-                    }
-                    else
-                    {
-                        cout << "Resource not found." << endl;
-                    }
-                    break;
-                }
-            case 10:
+            case 9: 
+                     
             {
                 students removed_student;
                 string resource_id;
@@ -215,6 +191,10 @@ int main()
                     cout << "No waiting list for " << resource_id << "." << endl;
                     break;
                 }
+
+                string date;
+                cout << "Enter date (YYYY-MM-DD): ";
+                cin >> date;
                 if(it->second.dequeue(removed_student))
                 {
                     cout << "Student removed from waiting list." << endl;
@@ -230,6 +210,42 @@ int main()
                 break;
             }
             
+            case 10:
+            {
+                cout << "======Reports Menu======" << endl;
+                cout << "1. Active Reservations" << endl;
+                cout << "2. Resource Utilization" << endl;
+                cout << "3. Most Requested Resources" << endl;
+                cout << "4. Waitlist Statistics" << endl;
+                cout << "5. All Reports" << endl;
+                cout << "0. Back" << endl;
+                int report_choice = read_int("Enter choice: ", 0, 5);
+                switch(report_choice)
+                {
+                    case 1:
+                        report_generator.active_reservations();
+                        break;
+                    case 2:
+                        report_generator.resource_utilization();
+                        break;
+                    case 3:
+                        int top_n = read_int("Enter the number of top requested resources: ", 1, 100);
+                        report_generator.most_requested_resources(top_n);
+                        break;
+                    case 4:
+                        report_generator.waitlist_statistics();
+                        break;
+                    case 5:
+                        report_generator.all_reports();
+                        break;
+                    case 0:
+                        break;
+                    default:
+                        cout << "Invalid choice" << endl;
+                        break;
+                }
+                break;
+            }
             case 0: 
                 cout << "Exiting program." << endl;
                 break;
@@ -239,5 +255,39 @@ int main()
                 
         }
 
+    }
+}
+
+int read_int(const string& prompt, int min, int max) {
+    int value;
+
+    while (true)
+    {
+        cout << prompt;
+        cin >> value;
+
+        if (cin.eof())
+        {
+            cout << endl << "Exiting program." << endl;
+            exit(0);
+        }
+
+        if (cin.fail())
+        {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Invalid input. Please enter a number." << endl;
+            continue;
+        }
+
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+
+        if (value < min || value > max)
+        {
+            cout << "Please enter a number between " << min << " and " << max << "." << endl;
+            continue;
+        }
+
+        return value;
     }
 }
