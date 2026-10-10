@@ -2,11 +2,10 @@
 
 using namespace std;
 
-ReportGenerator::ReportGenerator(const ResourceManager& rm, const ReservationManager& resm, const map<string, WaitingList>& wl) : resources(rm), reservations(resm), waiting_lists(wl) {}
+ReportGenerator::ReportGenerator(const ResourceManager& rm, const ReservationManager& resm, const map<string, map<string, WaitingList>>& wl) : resources(rm), reservations(resm), waiting_lists(wl) {}
 
 void ReportGenerator::active_reservations() const
 {
-    cout << "Active Reservations:" << endl;
     // TODO After Adrian puts sorting in, uncomment this:
     /*
          vector<Reservation> sorted = reservations.get_all_reservations();
@@ -52,30 +51,42 @@ void ReportGenerator::most_requested_resources(int top_n) const
 void ReportGenerator::waitlist_statistics() const
 {
     cout << "Waitlist Statistics:" << endl;
-    // TODO correct logic on waitinglist reporting
-    for (const auto& pair : waiting_lists)
+    for (const auto& resource_pair : waiting_lists)
     {
-        const string& resource_id = pair.first;
-        const WaitingList& wl = pair.second;
-        
-        cout << "Resource ID: " << resource_id << ", Waiting List Size: " << wl.size() << endl;
-        students next;
-        if (wl.peek(next))
-            cout << "Next Student: " << next.student_id << " | " << next.student_name << endl;
+        const string& resource_id = resource_pair.first;
+        const map<string, WaitingList>& wl_map = resource_pair.second;
+        for (const auto& wl_pair : wl_map)
+        {
+            const WaitingList& wl = wl_pair.second;
+            if (wl.is_empty())
+                continue;
+            cout << "Resource ID: " << resource_id << " | Date: " << wl_pair.first << " | Waiting List Size: " << wl.size() << endl;
+            students next;
+            if (wl.peek(next))
+                cout << "Next Student: " << next.student_id << " | " << next.student_name << endl;
+        }
     }
 
     int total_waiting = 0;
     string longest_queue_resource;
     int longest_queue_size = 0;
-    for (const auto& pair : waiting_lists)
+    for (const auto& resource_pair : waiting_lists)
     {
-        const string& resource_id = pair.first;
-        const WaitingList& wl = pair.second;
-        total_waiting += wl.size();
-        if (wl.size() > longest_queue_size)
+        const string& resource_id = resource_pair.first;
+        const map<string, WaitingList>& wl_map = resource_pair.second;
+        for (const auto& wl_pair : wl_map)
         {
-            longest_queue_size = wl.size();
-            longest_queue_resource = resource_id;
+            const WaitingList& wl = wl_pair.second;
+            if (wl.is_empty())
+                continue;
+            total_waiting += wl.size();
+            if (wl.size() > longest_queue_size)
+            {
+                longest_queue_size = wl.size();
+                longest_queue_resource = resource_id + " on " + wl_pair.first;
+                //longest_queue_resource = resource_id;
+                //cout << "New longest queue: Resource ID " << longest_queue_resource << " with " << longest_queue_size << " students" << endl;
+            }
         }
     }
     if (total_waiting > 0)

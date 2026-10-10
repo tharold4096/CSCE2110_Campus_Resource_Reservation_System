@@ -90,11 +90,12 @@ void ReservationManager::display_reservations() const {
 
 
 
-void ReservationManager::cancel_reservation(const Reservation& reservation) {
+//cancel the reservation based on id and pass-by-reference object 
+bool ReservationManager::cancel_reservation(const string& reservation_id, Reservation& cancelled) {
 	vector<Reservation> all_reservations = reservations.get_all();
 	int found = -1;
 	for (int i = 0; i < (int)all_reservations.size(); i++) {
-		if (all_reservations[i].get_reservation_id() == reservation.get_reservation_id()) {
+		if (all_reservations[i].get_reservation_id() == reservation_id) {
 			found = i;
 			break;
 		}
@@ -102,13 +103,14 @@ void ReservationManager::cancel_reservation(const Reservation& reservation) {
 
 	if (found == -1) {
 		cout << "Reservation not found. " << endl;
-		return;
+		return false;
 	}
 
 	Reservation reservation_found = all_reservations[found];
 	reservations.remove(reservation_found);
 	cancellation.push(reservation_found);
-	cout << "Reservation cancelled successfully. " << endl;
+	cancelled = reservation_found;
+	return true;
 }
 
 bool ReservationManager::undo_cancel()

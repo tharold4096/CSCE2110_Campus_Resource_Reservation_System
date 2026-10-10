@@ -15,7 +15,7 @@ private:
 		
 public:
 	  bool create_reservation(const Reservation& reservation);
-	  void cancel_reservation(const Reservation& reservation);
+	  bool cancel_reservation(const string& reservation_id, Reservation& cancelled);
 	  void display_reservations() const;
 	  bool validate_reservation(const Reservation& reservation) const;
 	  bool is_resource_taken(const string& resource_id, const string& date) const;
