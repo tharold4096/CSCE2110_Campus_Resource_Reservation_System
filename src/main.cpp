@@ -24,11 +24,10 @@ int main()
  ResourceManager resource_manager;
  resource_manager.load_resources("data/resources.txt");
  ReservationManager manager;
- map<string, WaitingList> waiting_lists;
+ map<string, map<string,WaitingList>> waiting_lists;
 
  ReportGenerator report_generator(resource_manager, manager, waiting_lists);
 
- //IMPORTANT: MENU IS NOT FUNCTIONAL. NEED TO FINISH LOGIC BEFORE SUBMISSION
  while (choice != 0)
  {
     cout << "=====Campus Resource Reservation System=====" << endl;
@@ -41,28 +40,11 @@ int main()
     cout << "6. View Active Reservations" << endl;
     cout << "7. View Cancellation History" << endl;
     cout << "8. View Waiting List" << endl;
-    //cout << "6. Add Student to Waiting List" << endl;
-    cout << "9. Withdrawal from list" << endl;
+    cout << "9. Withdrawal from waiting list" << endl;
     cout << "10. Reports" << endl;
     
 
-    cout << "Enter choice: ";
     choice = read_int("Enter choice: ", 0, 10);
-
-    if (cin.eof())
-    {
-        cout << "Exiting program." << endl;
-        break;
-    }
-
-    if (cin.fail())
-    {
-        cin.clear();
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
-        cout << "Invalid choice" << endl;
-        choice = -1;
-        continue;
-    }
 
 
     switch(choice)
@@ -74,7 +56,7 @@ int main()
                 {
                     string search_id;
 
-                    cout << "Enter resource ID to search; ";
+                    cout << "Enter resource ID to search: ";
                     cin >> search_id;
 
                     const Resource* found = resource_manager.find_resource(search_id);
@@ -181,10 +163,15 @@ int main()
             {
                 students removed_student;
                 string resource_id;
-
+                string date;
                 cout << "Enter resource ID: ";
                 cin >> resource_id;
-
+                cout << "Enter date (YYYY-MM-DD): ";
+                cin >> date;
+                cout << "Enter Student ID: ";
+                cin >> removed_student.student_id;
+                cout << "Enter Student Name: ";
+                cin >> removed_student.student_name;
                 auto it = waiting_lists.find(resource_id);
                 if (it == waiting_lists.end())
                 {
@@ -192,9 +179,7 @@ int main()
                     break;
                 }
 
-                string date;
-                cout << "Enter date (YYYY-MM-DD): ";
-                cin >> date;
+                
                 if(it->second.dequeue(removed_student))
                 {
                     cout << "Student removed from waiting list." << endl;
@@ -229,9 +214,11 @@ int main()
                         report_generator.resource_utilization();
                         break;
                     case 3:
+                    {
                         int top_n = read_int("Enter the number of top requested resources: ", 1, 100);
                         report_generator.most_requested_resources(top_n);
                         break;
+                    }
                     case 4:
                         report_generator.waitlist_statistics();
                         break;
