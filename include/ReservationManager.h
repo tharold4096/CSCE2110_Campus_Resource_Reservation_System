@@ -11,7 +11,8 @@ class ReservationManager {
 private:
 	LinkedList<Reservation> reservations;  // res are stored in linked list
 	Cancellations cancellation;
-
+	vector<Reservation> get_all_reservations() const {return reservations.get_all();}
+		
 public:
 	  bool create_reservation(const Reservation& reservation);
 	  void cancel_reservation(const Reservation& reservation);

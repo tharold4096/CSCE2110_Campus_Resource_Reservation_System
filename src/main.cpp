@@ -9,7 +9,7 @@
 #include "WaitingList.h"
 #include "ReservationManager.h"
 #include "ResourceManager.h"
-
+#include "ReportGenerator.h"
 
 
 using namespace std;
@@ -21,7 +21,7 @@ int main()
  ResourceManager resource_manager;
  resource_manager.load_resources("data/resources.txt");
  ReservationManager manager;
- WaitingList waiting_list;
+ map<string, WaitingList> waiting_lists;
 
  while (choice != 11)
  {
@@ -92,7 +92,7 @@ int main()
                 if (!manager.create_reservation(reservation)
                     && manager.is_resource_taken(resource_id, date))
                 {
-                    if (waiting_list.enqueue(student))
+                    if (waiting_lists[resource_id].enqueue(student))
                         cout << "Student added to the waiting list for " << resource_id << "." << endl;
                 }
 
@@ -118,14 +118,24 @@ int main()
                 manager.display_reservations();
                 break;
             case 5:
-                waiting_list.display_list();
+                for (const auto& pair : waiting_lists)
+                {
+                    const string& resource_id = pair.first;
+                    const WaitingList& wl = pair.second;
+                    cout << "Resource ID: " << resource_id << endl;
+                    wl.display_list();
+                }
                 break;
             case 6:
             {
                 string wait_student_id;
+                string resource_id;
 
                 cout << "Enter student ID: ";
                 cin >> wait_student_id;
+                
+                cout << "Enter resource ID: ";
+                cin >> resource_id;
             
                 string wait_student_name;
 
@@ -134,8 +144,8 @@ int main()
                 getline(cin, wait_student_name);
 
                 students wait_student{wait_student_id, wait_student_name};
-                if (waiting_list.enqueue(wait_student))
-                    cout << "Student added to waiting list." << endl;
+                if (waiting_lists[resource_id].enqueue(wait_student))
+                    cout << "Student added to the waiting list for " << resource_id << "." << endl;
 
                 break;
             }
@@ -169,8 +179,12 @@ int main()
             case 10:
             {
                 students removed_student;
+                string resource_id;
 
-                if(waiting_list.dequeue(removed_student))
+                cout << "Enter resource ID: ";
+                cin >> resource_id;
+
+                if(waiting_lists[resource_id].dequeue(removed_student))
                 {
                     cout << "Student removed from waiting list." << endl;
                     cout << "Student ID: " << removed_student.student_id << endl;

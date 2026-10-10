@@ -11,6 +11,7 @@ class Resource
         string resource_name;
         string resource_type;
         bool available;
+        int request_count = 0;
 
     public:
         Resource();
@@ -22,6 +23,8 @@ class Resource
         bool get_availability() const;
 
         void set_availability(bool availability);
+        void increment_request_count();
+        int get_request_count() const;
         void print() const;
 
 };
