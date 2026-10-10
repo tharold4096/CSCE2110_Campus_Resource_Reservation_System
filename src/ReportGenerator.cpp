@@ -22,15 +22,17 @@ void ReportGenerator::resource_utilization() const
 
 void ReportGenerator::most_requested_resources(int top_n) const
 {
+    /*
     cout << "Most Requested Resources (Top " << top_n << "):" << endl;
     vector<Resource> sorted = resources.get_all_resources();
-    merge_sort(sorted, [](const Resource& a, const Resource& b)
+    //merge_sort(sorted, [](const Resource& a, const Resource& b) //IMPORTANT: TODO: enable when Sorting.h merges
                { return a.get_request_count() > b.get_request_count(); });
     for(int i = 0; i < top_n && i < sorted.size(); i++)
     {
         const Resource& resource = sorted[i];
         cout << "ID: " << resource.get_resource_id() << " | Name: " << resource.get_resource_name() << " | Active Reservations: " << resource.get_request_count() << endl;
     }
+    */
 }
 
 void ReportGenerator::waitlist_statistics() const

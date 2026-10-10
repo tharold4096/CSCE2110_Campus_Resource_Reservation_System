@@ -10,11 +10,11 @@ class ResourceManager
 {
     private:
         vector<Resource> resources;
-        
+        int find_index(const string& id) const;
     public:
         bool load_resources(const string& filename);
         void display_resources() const;
-        int find_index(const string& id) const;
+        
         const Resource* find_resource(const string& id) const;
         vector<Resource> get_all_resources() const;
         Resource* find_resource_mutable(const string& id);

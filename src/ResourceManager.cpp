@@ -6,6 +6,31 @@
 
 using namespace std;
 
+
+int ResourceManager::find_index(const string& id) const
+{
+    int left = 0;
+    int right = static_cast<int>(resources.size()) -1;
+
+    while(left <= right)
+    {
+        int mid = left + (right - left) / 2;
+        if (resources[mid].get_resource_id() == id)
+        {
+            return mid;
+        }
+        else if (id < resources[mid].get_resource_id())
+        {
+            right = mid - 1;
+        }
+        else
+        {
+            left = mid + 1;
+        }
+    }
+    return -1;
+}
+
 bool ResourceManager:: load_resources(const string& filename)
 {
     ifstream file(filename);
