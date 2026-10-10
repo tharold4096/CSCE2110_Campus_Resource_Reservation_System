@@ -23,20 +23,24 @@ int main()
  ReservationManager manager;
  map<string, WaitingList> waiting_lists;
 
- while (choice != 11)
+ ReportGenerator report_generator(resource_manager, manager, waiting_lists);
+
+ while (choice != 0)
  {
     cout << "=====Campus Resource Reservation System=====" << endl;
+    cout << "0. Exit" << endl;
     cout << "1. View Resources" << endl;
-    cout << "2. Create Reservation" << endl;
-    cout << "3. Cancel Reservation" << endl;
-    cout << "4. View Active Reservations" << endl;
-    cout << "5. View Waiting List" << endl;
+    cout << "2. Search Resource by ID" << endl;
+    cout << "3. Create Reservation" << endl;
+    cout << "4. Cancel Reservation" << endl;
+    cout << "5. Undo Cancellation" << endl;
+    cout << "6. View Active Reservations" << endl;
+    cout << "7. View Cancellation History" << endl;
+    cout << "8. View Waiting List" << endl;
     cout << "6. Add Student to Waiting List" << endl;
-    cout << "7. Undo Cancellation" << endl;
-    cout << "8. View Cancellation History" << endl;
-    cout << "9. Search Resource by ID" << endl;
     cout << "10. Remove Student from Waiting List" << endl;
-    cout << "11. Exit" << endl;
+    cout << "11. Reports" << endl;
+    
 
     cout << "Enter choice: ";
     cin >> choice;
@@ -225,7 +229,7 @@ int main()
                 break;
             }
             
-            case 11: 
+            case 0: 
                 cout << "Exiting program." << endl;
                 break;
 
