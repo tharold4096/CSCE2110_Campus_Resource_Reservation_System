@@ -14,7 +14,10 @@ class ReportGenerator
     const ResourceManager& resources;
     const ReservationManager& reservations;
     const map<string, WaitingList>& waiting_lists;
-
+    public:
+    ReportGenerator(const ResourceManager& rm,
+                    const ReservationManager& resm,
+                    const std::map<std::string, WaitingList>& wl);
     void active_reservations() const;
     void resource_utilization() const;
     void most_requested_resources(int top_n = 5) const;

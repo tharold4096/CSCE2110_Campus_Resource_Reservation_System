@@ -104,4 +104,13 @@ Resource* ResourceManager::find_resource_mutable(const string& id)
 }
 
 
+void ResourceManager::display_resources(int top_n) const
+{
+    for(int i = 0; i < top_n && i < static_cast<int>(resources.size()); i++)
+    {
+        resources[i].print();
+        cout << endl;
+    }
+}
+
     

@@ -14,6 +14,7 @@ class ResourceManager
     public:
         bool load_resources(const string& filename);
         void display_resources() const;
+        void display_resources(int top_n) const;
         const Resource* find_resource(const string& id) const;
         vector<Resource> get_all_resources() const;
         Resource* find_resource_mutable(const string& id);
