@@ -44,9 +44,10 @@ int main()
     cout << "8. View Waiting List" << endl;
     cout << "9. Withdrawal from waiting list" << endl;
     cout << "10. Reports" << endl;
+    cout << "11. View Resources Sorted by Name" << endl;
     
 
-    choice = read_int("Enter choice: ", 0, 10);
+    choice = read_int("Enter choice: ", 0, 11);
 
 
     switch(choice)
@@ -309,6 +310,9 @@ int main()
                 }
                 break;
             }
+            case 11:
+                resource_manager.display_resources_by_name();
+                break;
             case 0: 
                 cout << "Exiting program." << endl;
                 break;

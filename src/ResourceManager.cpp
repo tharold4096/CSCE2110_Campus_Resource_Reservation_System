@@ -83,6 +83,21 @@ void ResourceManager:: display_resources() const
     }
 }
 
+// sorting resources by name with merge sort
+// sorts a copy so `resources` stays in ID order for the binary search in find_index()
+void ResourceManager::display_resources_by_name() const
+{
+    vector<Resource> sorted = resources;
+    merge_sort(sorted, [](const Resource& a, const Resource& b) {
+            return a.get_resource_name() < b.get_resource_name();
+    });
+    for(const Resource& resource : sorted)
+    {
+        resource.print();
+        cout << endl;
+    }
+}
+
 const Resource* ResourceManager::find_resource(const string& id) const
 {
     int i = find_index(id);
