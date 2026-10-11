@@ -1,7 +1,7 @@
-// TODO(sorting): move `#include <vector>` BELOW `#define SORTING_H` so the whole file sits inside the include guard.
-#include <vector>
 #ifndef SORTING_H
 #define SORTING_H
+
+#include <vector>
 
 using namespace std;
 
@@ -16,9 +16,8 @@ void merge_sections(vector<T>& items, int left, int middle, int right, Compare l
 
 	while (i <= middle && j <= right) {
 
-		// TODO(sorting): make this merge STABLE. Change the condition to `!less(items[j], items[i])`.
-		//   Right now equal items take the right-hand element first, which reorders ties. The tie-breaks in the reports depend on stable order.
-		if (less(items[i], items[j])) {
+		// take from the left side unless the right item is strictly smaller (keeps the sort stable)
+		if (!less(items[j], items[i])) {
 			temp.push_back(items[i]);
 			i++;
 		}
@@ -42,15 +41,13 @@ void merge_sections(vector<T>& items, int left, int middle, int right, Compare l
 
 }
 // recursively splits the list into smaller sections 
-// TODO(sorting): COMPILE ERROR. `vecotr<T>` on the next line must be `vector<T>`.
-template <typename T, typename Compare> void merge_sort_recursive(vecotr<T>& items, int left, int right, Compare less) {
+template <typename T, typename Compare> void merge_sort_recursive(vector<T>& items, int left, int right, Compare less) {
 	if (left < right) {
 
 		int middle = left + (right - left) / 2;
 	
 		merge_sort_recursive(items, left, middle, less);
-		// TODO(sorting): BUG. This passes 5 arguments. Change it to `merge_sort_recursive(items, middle + 1, right, less);`
-		merge_sort_recursive(items, middle, +1, right, less);
+		merge_sort_recursive(items, middle + 1, right, less);
 		merge_sections(items, left, middle, right, less);
 
 	}

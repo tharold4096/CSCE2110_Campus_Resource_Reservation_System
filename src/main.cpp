@@ -116,16 +116,22 @@ int main()
                     cout << "Resource is unavailable." << endl;
                     break;
                 }
-                res->increment_request_count();
-
+                bool already_reserved = false;
                 for (const Reservation& r : manager.get_all_reservations())
                 {
                     if (r.get_student_id() == student_id && r.get_resource_id() == resource_id && r.get_date() == date)
                     {
-                        cout << "You already have this reservation." << endl;
-                        return; //exit the current case if the reservation already exists
+                        already_reserved = true;
+                        break;
                     }
                 }
+                if (already_reserved)
+                {
+                    cout << "You already have this reservation." << endl;
+                    break; //exit the current case if the reservation already exists
+                }
+                res->increment_request_count();
+
                 Reservation reservation(reservation_id, student, resource_id, date);
                 if (!manager.create_reservation(reservation)
                     && manager.is_resource_taken(resource_id, date))
