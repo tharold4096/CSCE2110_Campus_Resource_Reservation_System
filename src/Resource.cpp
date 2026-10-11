@@ -54,3 +54,12 @@ else
     cout << "Unavailable" << endl;
 }
 
+void Resource::increment_request_count()
+{
+    request_count++;
+}
+
+int Resource::get_request_count() const
+{
+    return request_count;
+}
