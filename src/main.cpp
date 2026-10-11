@@ -118,6 +118,14 @@ int main()
                 }
                 res->increment_request_count();
 
+                for (const Reservation& r : manager.get_all_reservations())
+                {
+                    if (r.get_student_id() == student_id && r.get_resource_id() == resource_id && r.get_date() == date)
+                    {
+                        cout << "You already have this reservation." << endl;
+                        return; //exit the current case if the reservation already exists
+                    }
+                }
                 Reservation reservation(reservation_id, student, resource_id, date);
                 if (!manager.create_reservation(reservation)
                     && manager.is_resource_taken(resource_id, date))
@@ -178,16 +186,16 @@ int main()
                     cout << "Nothing to undo, or the slot was given to the next waiting student." << endl;
                 break;
             case 6: 
-                manager.display_reservations();
+                report_generator.active_reservations();
                 break;
             case 7: 
                 manager.display_cancellations();
                 break;
             case 8: 
             {
+                bool any_waiting = false;
                 for (const auto& pair : waiting_lists)
                 {
-                    bool any_waiting = false;
                     const string& resource_id = pair.first;
                     const auto& inner_map = pair.second;
                     for (const auto& inner_pair : inner_map)
@@ -199,7 +207,9 @@ int main()
                         cout << "Resource ID: " << resource_id << " | Date: " << date << endl;
                         wl.display_list();
                     }
-                    if (!any_waiting) cout << "No students are waiting." << endl;
+                }
+                if (!any_waiting) {
+                    cout << "No students are waiting." << endl;
                 }
                 break;
             }

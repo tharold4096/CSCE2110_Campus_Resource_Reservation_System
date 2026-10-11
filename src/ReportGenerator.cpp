@@ -1,21 +1,27 @@
 #include "ReportGenerator.h"
-
+#include "Sorting.h"
 using namespace std;
 
 ReportGenerator::ReportGenerator(const ResourceManager& rm, const ReservationManager& resm, const map<string, map<string, WaitingList>>& wl) : resources(rm), reservations(resm), waiting_lists(wl) {}
 
 void ReportGenerator::active_reservations() const
 {
-    // TODO After Adrian puts sorting in, uncomment this:
-    /*
+    
          vector<Reservation> sorted = reservations.get_all_reservations();
          merge_sort(sorted, [](const Reservation& a, const Reservation& b) {
              if (a.get_date() != b.get_date()) return a.get_date() < b.get_date();
              return a.get_reservation_id() < b.get_reservation_id();   // tie-break
          });
-    */
-         //then print each one: ID | student | resource | date
-    reservations.display_reservations();
+    
+    cout << "Active Reservations (by date):" << endl;
+    if (sorted.empty()) { 
+        cout << "No active reservations." << endl; 
+        return; 
+    }
+    for (const Reservation& r : sorted) { 
+        r.print(); cout << endl; 
+    }
+    //reservations.display_reservations();
 }
 
 void ReportGenerator::resource_utilization() const
@@ -38,8 +44,10 @@ void ReportGenerator::most_requested_resources(int top_n) const
     
     cout << "Most Requested Resources (Top " << top_n << "):" << endl;
     vector<Resource> sorted = resources.get_all_resources();
-    //merge_sort(sorted, [](const Resource& a, const Resource& b) //IMPORTANT: TODO: enable when Sorting.h merges
-               //{ return a.get_request_count() > b.get_request_count(); });
+    merge_sort(sorted, [](const Resource& a, const Resource& b) 
+    { 
+        return a.get_request_count() > b.get_request_count(); 
+    });
     for(int i = 0; i < top_n && i < static_cast<int>(sorted.size()); i++)
     {
         const Resource& resource = sorted[i];

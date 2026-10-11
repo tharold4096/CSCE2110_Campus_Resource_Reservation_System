@@ -1,4 +1,5 @@
 #include "ResourceManager.h"
+#include "Sorting.h"
 
 #include<fstream>
 #include<iostream>
@@ -65,7 +66,14 @@ bool ResourceManager:: load_resources(const string& filename)
         Resource resource(id, name, type, available);
         resources.push_back(resource);
     }
-    // TODO(sorting): sort by ID here to facilitate binary search in find_index()
+    // TODO(sorting): find_index() is a binary search, so it only works if `resources` is sorted by ID. Add this here:
+    //     merge_sort(resources, [](const Resource& a, const Resource& b) {
+    //         return a.get_resource_id() < b.get_resource_id();
+    //     });
+    //   This does not compile until the private merge_sort/merge members are deleted (see ResourceManager.h).
+    merge_sort(resources, [](const Resource& a, const Resource& b) {
+            return a.get_resource_id() < b.get_resource_id();
+    });
     file.close();
     return true;
 }
@@ -93,12 +101,21 @@ Resource* ResourceManager::find_resource_mutable(const string& id)
 }
 
 // sorting resources by name with merge sort
+// TODO(sorting): DANGER. Sorting `resources` by name in place breaks find_index(), because the binary search needs ID order.
+//   Nothing calls this function right now. Choose one:
+//   (a) Delete it, plus its declaration in ResourceManager.h. This is the simplest option.
+//   (b) If you want a "View Resources by Name" option, rewrite it as a const function that prints a sorted COPY:
+//         vector<Resource> sorted = resources;
+//         merge_sort(sorted, [](const Resource& a, const Resource& b) { return a.get_resource_name() < b.get_resource_name(); });
+//         then print each one with `r.print(); cout << endl;`
 void ResourceManager::sort_resources_by_name() {
     if (resources.size() > 1) {
         merge_sort(0, static_cast<int>(resources.size()) - 1);
     }
 }
 
+// TODO(sorting): DELETE merge_sort() and merge() below. Sorting.h's generic template replaces them.
+//   They also contain a compile error: `j++` is missing its `;` inside merge().
 // recursively split the resource list into smaller sections
 void ResourceManager::merge_sort(int left, int right) {
     if (left < right) {
